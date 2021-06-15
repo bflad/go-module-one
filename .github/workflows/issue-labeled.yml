@@ -11,11 +11,11 @@ jobs:
   PluginSplit:
     if: |
       startsWith(github.event.label.name, 'remote-plugin/') &&
-      !contains(join(github.event.issues.labels.*.name, ','), 'communicator/') &&
-      !contains(github.event.issues.labels.*.name, 'build') &&
-      !contains(github.event.issues.labels.*.name, 'core') &&
-      !contains(github.event.issues.labels.*.name, 'new-plugin-contribution') &&
-      !contains(github.event.issues.labels.*.name, 'website')
+      !contains(join(github.event.issue.labels.*.name, ','), 'communicator/') &&
+      !contains(github.event.issue.labels.*.name, 'build') &&
+      !contains(github.event.issue.labels.*.name, 'core') &&
+      !contains(github.event.issue.labels.*.name, 'new-plugin-contribution') &&
+      !contains(github.event.issue.labels.*.name, 'website')
     runs-on: ubuntu-latest
     steps:
       - id: plugin-name
