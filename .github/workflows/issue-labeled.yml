@@ -9,13 +9,13 @@ permissions:
 
 jobs:
   PluginSplit:
-    if: |
-      startsWith(github.event.issues.label, 'remote-plugin/') &&
-      !contains(join(github.event.issues.labels.*.name, ','), 'communicator/') &&
-      !contains(github.event.issues.labels.*.name, 'build') &&
-      !contains(github.event.issues.labels.*.name, 'core') &&
-      !contains(github.event.issues.labels.*.name, 'new-plugin-contribution') &&
-      !contains(github.event.issues.labels.*.name, 'website')
+    # if: |
+    #   startsWith(github.event.issues.label, 'remote-plugin/') &&
+    #   !contains(join(github.event.issues.labels.*.name, ','), 'communicator/') &&
+    #   !contains(github.event.issues.labels.*.name, 'build') &&
+    #   !contains(github.event.issues.labels.*.name, 'core') &&
+    #   !contains(github.event.issues.labels.*.name, 'new-plugin-contribution') &&
+    #   !contains(github.event.issues.labels.*.name, 'website')
     runs-on: ubuntu-latest
     steps:
       - id: plugin-name
@@ -47,6 +47,6 @@ jobs:
         uses: peter-evans/close-issue@02206dc8639c8484fe937af4a855115302186524
         with:
           comment: |
-            This appears to be an issue with the [${{ steps.plugin-name.outputs.name }} Packer Plugin](https://github.com/${{ steps.plugin-mappings.outputs.environment }}/packer-plugin-${{ steps.plugin-name.outputs.name }}). Plugin code and issue trackers were [split from the this repository](https://github.com/hashicorp/packer/issues/8610#issuecomment-770034737).
+            This appears to be an issue with the [${{ steps.plugin-name.outputs.name }} Packer Plugin](https://github.com/${{ steps.plugin-mappings.outputs.environment }}/packer-plugin-${{ steps.plugin-name.outputs.name }}). Plugin code and issue trackers were [split from the this repository](https://github.com/hashicorp/packer/issues/8610#issuecomment-770034737) and this issue will not be triaged or resolved here.
 
             Please open an issue in the new repository using the link above, thank you.
