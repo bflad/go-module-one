@@ -19,7 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: plugin-name
-        run: echo "::set-output name=name::$(echo ${{ github.event.issues.label }} | cut -d/ -f2)"
+        run: |
+          name=$(echo ${{ github.event.issues.label }} | cut -d/ -f2)
+          echo "::set-output name=name::$name"
       - uses: kanga333/variable-mapper@92703696e9a3f370901c3d53ae3836569b1055e5
         id: plugin-mappings
         with:
