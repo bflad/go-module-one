@@ -18,7 +18,7 @@ jobs:
       #       This functionality has been released in ${{ github.event.milestone.title }}.
 
       #       For further feature requests or bug reports with this functionality, please create a [new GitHub issue](https://github.com/${{ github.repository }}/issues/new/choose) following the template. Thank you!
-      - uses: hashicorp/setup-hc-releases@8d195a80bad9839c902c27875d7a30db14f1c3a6
+      - uses: hashicorp/setup-hc-releases@2a98c93f5127a7c5dcc274a65614ccd9725f1dbc
         with:
           github-token: ${{ secrets.HC_RELEASES_GITHUB_TOKEN }}
       - run: hc-releases version
