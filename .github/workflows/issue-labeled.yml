@@ -9,46 +9,64 @@ permissions:
 
 jobs:
   PluginSplit:
-    if: |
-      startsWith(github.event.label.name, 'remote-plugin/') &&
-      !contains(join(github.event.issue.labels.*.name, ','), 'communicator/') &&
-      !contains(github.event.issue.labels.*.name, 'build') &&
-      !contains(github.event.issue.labels.*.name, 'core') &&
-      !contains(github.event.issue.labels.*.name, 'new-plugin-contribution') &&
-      !contains(github.event.issue.labels.*.name, 'website')
+    if: startsWith(github.event.label.name, 'remote-plugin/')
     runs-on: ubuntu-latest
     steps:
-      - id: plugin-name
-        run: |
-          name=$(echo ${{ github.event.label.name }} | cut -d/ -f2)
-          echo "::set-output name=name::$name"
-      - uses: kanga333/variable-mapper@92703696e9a3f370901c3d53ae3836569b1055e5
-        id: plugin-mappings
+      - uses: bflad/action-migrate-issue@main
         with:
-          export_to: log,output
-          key: ${{ steps.plugin-name.outputs.name }}
-          map: |
-            {
-              "exoscale": {
-                "github_organization": "exoscale"
-              },
-              "huaweicloud": {
-                "github_organization": "huaweicloud"
-              },
-              "upcloud": {
-                "github_organization": "UpCloudLtd"
-              },
-              "vultr": {
-                "github_organization": "vultr"
-              },
-              ".*": {
-                "github_organization": "hashicorp"
-              }
-            }
-      - name: Close Issue
-        uses: peter-evans/close-issue@02206dc8639c8484fe937af4a855115302186524
-        with:
-          comment: |
-            This appears to be an issue with the [${{ steps.plugin-name.outputs.name }} Packer Plugin](https://github.com/${{ steps.plugin-mappings.outputs.github_organization }}/packer-plugin-${{ steps.plugin-name.outputs.name }}). Plugin code and issue trackers were [split from the this repository](https://github.com/hashicorp/packer/issues/8610#issuecomment-770034737) and this issue will not be triaged or resolved here.
+          source-issue-comment: |
+            This issue has been migrated to {target-issue-url} due to the [Packer Plugin split](https://github.com/hashicorp/packer/issues/8610#issuecomment-770034737).
 
-            Please open an issue in the new repository using the link above, thank you.
+            Please follow the new issue for updates.
+          source-issue-skip-label-names: |
+            build
+            core
+            new-plugin-contribution
+            website
+          source-issue-skip-label-prefixes: communicator/
+          target-repository-name-prefix: 'go-module-'
+          target-repository-name-prefix-label-prefix: 'remote-plugin/'
+          target-repository-github-token: ${{ secrets.TARGET_REPO_GITHUB_TOKEN }}
+    # if: |
+    #   startsWith(github.event.label.name, 'remote-plugin/') &&
+    #   !contains(join(github.event.issue.labels.*.name, ','), 'communicator/') &&
+    #   !contains(github.event.issue.labels.*.name, 'build') &&
+    #   !contains(github.event.issue.labels.*.name, 'core') &&
+    #   !contains(github.event.issue.labels.*.name, 'new-plugin-contribution') &&
+    #   !contains(github.event.issue.labels.*.name, 'website')
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - id: plugin-name
+    #     run: |
+    #       name=$(echo ${{ github.event.label.name }} | cut -d/ -f2)
+    #       echo "::set-output name=name::$name"
+    #   - uses: kanga333/variable-mapper@92703696e9a3f370901c3d53ae3836569b1055e5
+    #     id: plugin-mappings
+    #     with:
+    #       export_to: log,output
+    #       key: ${{ steps.plugin-name.outputs.name }}
+    #       map: |
+    #         {
+    #           "exoscale": {
+    #             "github_organization": "exoscale"
+    #           },
+    #           "huaweicloud": {
+    #             "github_organization": "huaweicloud"
+    #           },
+    #           "upcloud": {
+    #             "github_organization": "UpCloudLtd"
+    #           },
+    #           "vultr": {
+    #             "github_organization": "vultr"
+    #           },
+    #           ".*": {
+    #             "github_organization": "hashicorp"
+    #           }
+    #         }
+    #   - name: Close Issue
+    #     uses: peter-evans/close-issue@02206dc8639c8484fe937af4a855115302186524
+    #     with:
+    #       comment: |
+    #         This appears to be an issue with the [${{ steps.plugin-name.outputs.name }} Packer Plugin](https://github.com/${{ steps.plugin-mappings.outputs.github_organization }}/packer-plugin-${{ steps.plugin-name.outputs.name }}). Plugin code and issue trackers were [split from the this repository](https://github.com/hashicorp/packer/issues/8610#issuecomment-770034737) and this issue will not be triaged or resolved here.
+
+    #         Please open an issue in the new repository using the link above, thank you.
